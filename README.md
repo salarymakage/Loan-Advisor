@@ -106,3 +106,7 @@ Create a `.env` file:
 ```sh
 touch .env
 ```
+
+# Synthetic Data
+
+github: https://github.com/salarymakage/loan_synthetic_data.git
