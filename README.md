@@ -107,6 +107,22 @@ Create a `.env` file:
 touch .env
 ```
 
+---
+
+## **User Interface & Application Flow**
+Below are some screenshots showcasing the user interface for the loan application and loan details:
+
+### **Loan Application Form**
+![Loan Application Form](image/Screenshot%202025-02-07%20101508.png)
+
+### **Loan Approval Details**
+![Loan Approval Details](image/Screenshot%202025-02-07%20101615.png)
+
+### **Loan Summary View**
+![Loan Summary View](image/Screenshot%202025-02-07%20101602.png)
+
+---
+
 # Synthetic Data
 
 github: https://github.com/salarymakage/loan_synthetic_data.git
