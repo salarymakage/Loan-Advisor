@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTP Verification</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 20px;
+        }
+
+        .otp-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .otp-input {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 1.5rem 0;
+        }
+
+        .otp-input input {
+            width: 45px;
+            height: 45px;
+            font-size: 1.2rem;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            background: transparent;
+            transition: all 0.3s;
+        }
+
+        .otp-input input:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        button {
+            background: #4299e1;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            margin-top: 1rem;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            background: #3182ce;
+        }
+
+        .error {
+            color: #e53e3e;
+            margin-top: 1rem;
+        }
+
+        .timer {
+            color: #4a5568;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 400px) {
+            .otp-input input {
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="otp-container">
+        <h1>OTP Verification</h1>
+        <p style="color: #4a5568; margin-bottom: 1rem;">Enter the verification code sent to your phone</p>
+        
+        <form method="POST" id="otpForm">
+            {% csrf_token %}
+            <div class="otp-input">
+                <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+                <input type="text" maxlength="1" pattern="[0-9]" inputmode="numeric" required>
+            </div>
+            <input type="hidden" name="otp" id="finalOtp">
+            <button type="submit">Verify</button>
+        </form>
+
+        <div class="timer">Resend OTP in <span id="countdown">02:00</span></div>
+
+        {% if error %}
+            <p class="error">{{ error }}</p>
+        {% endif %}
+    </div>
+
+    <script>
+        // OTP input handling
+        const inputs = document.querySelectorAll('.otp-input input');
+        const form = document.getElementById('otpForm');
+        const finalOtp = document.getElementById('finalOtp');
+
+        inputs.forEach((input, index) => {
+            input.addEventListener('keyup', (e) => {
+                if (e.key !== 'Backspace' && index < inputs.length - 1 && input.value) {
+                    inputs[index + 1].focus();
+                }
+                if (e.key === 'Backspace' && index > 0) {
+                    inputs[index - 1].focus();
+                }
+                updateFinalOtp();
+            });
+
+            input.addEventListener('input', () => {
+                input.value = input.value.replace(/[^0-9]/g, '');
+            });
+        });
+
+        function updateFinalOtp() {
+            finalOtp.value = Array.from(inputs).map(input => input.value).join('');
+        }
+
+        // Timer functionality
+        function startTimer(duration) {
+            let timer = duration;
+            const display = document.getElementById('countdown');
+            
+            const interval = setInterval(() => {
+                const minutes = Math.floor(timer / 60);
+                const seconds = timer % 60;
+
+                display.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                if (--timer < 0) {
+                    clearInterval(interval);
+                    display.parentElement.innerHTML = '<a href="#" style="color: #4299e1; text-decoration: none;">Resend OTP</a>';
+                }
+            }, 1000);
+        }
+
+        // Start 2-minute countdown
+        startTimer(120);
+    </script>
+</body>
+</html>

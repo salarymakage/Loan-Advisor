@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Advisor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, system-ui, sans-serif;
+        }
+
+        :root {
+            --accent: #66EA96;
+            --text: #1a1a1a;
+        }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: #fff;
+            padding: 1.5rem;
+            overflow: hidden;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 420px;
+            text-align: center;
+            position: relative;
+            backdrop-filter: blur(10px);
+            padding: 2.5rem;
+            border-radius: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 30px rgba(102, 234, 150, 0.2);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: var(--text);
+            margin-bottom: 2rem;
+            font-weight: 800;
+            position: relative;
+            background: linear-gradient(135deg, #1a1a1a, #333);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .subtitle {
+            color: #666;
+            margin-bottom: 2.5rem;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .btn-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn {
+            padding: 1.25rem;
+            border: none;
+            border-radius: 16px;
+            background: var(--accent);
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 234, 150, 0.4);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.4),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .shapes {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            background: var(--accent);
+            border-radius: 50%;
+            filter: blur(50px);
+            opacity: 0.15;
+            animation: morph 20s ease-in-out infinite;
+        }
+
+        .shape-1 {
+            width: 500px;
+            height: 500px;
+            top: -250px;
+            right: -100px;
+            animation-delay: 0s;
+        }
+
+        .shape-2 {
+            width: 400px;
+            height: 400px;
+            bottom: -200px;
+            left: -200px;
+            animation-delay: -5s;
+        }
+
+        .shape-3 {
+            width: 300px;
+            height: 300px;
+            top: 50%;
+            right: 10%;
+            animation-delay: -10s;
+        }
+
+        @keyframes morph {
+            0% {
+                border-radius: 60% 40% 30% 70%;
+                transform: rotate(0deg) scale(1) translateX(0);
+            }
+            50% {
+                border-radius: 30% 60% 70% 40%;
+                transform: rotate(180deg) scale(1.1) translateX(50px);
+            }
+            100% {
+                border-radius: 60% 40% 30% 70%;
+                transform: rotate(360deg) scale(1) translateX(0);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 2rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+    </div>
+    
+    <div class="container">
+        <h1>Loan Advisor</h1>
+        <p class="subtitle">Smart lending solutions</p>
+        <div class="btn-group">
+            <a href="{% url 'auth_system:signup' %}" class="btn">Get Started</a>
+            <a href="{% url 'auth_system:login' %}" class="btn">Sign In</a>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                this.style.transform = 'scale(0.98)';
+                document.body.style.opacity = 0;
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 300);
+            });
+        });
+
+        // Parallax effect for shapes
+        document.addEventListener('mousemove', (e) => {
+            const shapes = document.querySelectorAll('.shape');
+            const mouseX = e.clientX / window.innerWidth;
+            const mouseY = e.clientY / window.innerHeight;
+
+            shapes.forEach(shape => {
+                const shiftX = (mouseX - 0.5) * 50;
+                const shiftY = (mouseY - 0.5) * 50;
+                shape.style.transform = `translate(${shiftX}px, ${shiftY}px)`;
+            });
+        });
+    </script>
+</body>
+</html>

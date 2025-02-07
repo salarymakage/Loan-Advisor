@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply for Loan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: #f7fafc;
+            padding: 2rem;
+            color: #2d3748;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 2rem;
+            color: #2d3748;
+            font-size: 1.8rem;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            body {
+                padding: 1rem;
+            }
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        select, input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
+        }
+
+        input[type="number"] {
+            appearance: textfield;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        button, .back-link {
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        button {
+            background: #4299e1;
+            color: white;
+            border: none;
+            flex: 3;
+            cursor: pointer;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(66, 153, 225, 0.2);
+        }
+
+        .back-link {
+            background: #e2e8f0;
+            color: #4a5568;
+            flex: 1;
+        }
+
+        .back-link:hover {
+            background: #cbd5e0;
+        }
+
+        .help-text {
+            font-size: 0.875rem;
+            color: #718096;
+            margin-top: 0.25rem;
+        }
+
+        .error {
+            color: #e53e3e;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Apply for a Loan</h1>
+        <form method="POST" id="loanForm">
+            {% csrf_token %}
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="id_province">Province</label>
+                    {{ form.province }}
+                </div>
+                <div class="form-group">
+                    <label for="id_region_type">Region Type</label>
+                    {{ form.region_type }}
+                </div>
+                <div class="form-group">
+                    <label for="id_age">Age</label>
+                    {{ form.age }}
+                    <div class="help-text">Must be between 18 and 100 years</div>
+                </div>
+                <div class="form-group">
+                    <label for="id_gender">Gender</label>
+                    {{ form.gender }}
+                </div>
+                <div class="form-group">
+                    <label for="id_employment_type">Employment Type</label>
+                    {{ form.employment_type }}
+                </div>
+                <div class="form-group">
+                    <label for="id_annual_income">Annual Income</label>
+                    {{ form.annual_income }}
+                </div>
+                <div class="form-group">
+                    <label for="id_credit_history">Credit History</label>
+                    {{ form.credit_history }}
+                </div>
+                <div class="form-group">
+                    <label for="id_existing_debt">Existing Debt</label>
+                    {{ form.existing_debt }}
+                </div>
+                <div class="form-group">
+                    <label for="id_savings_assets">Savings & Assets</label>
+                    {{ form.savings_assets }}
+                </div>
+                <div class="form-group">
+                    <label for="id_loan_type">Loan Type</label>
+                    {{ form.loan_type }}
+                </div>
+                <div class="form-group">
+                    <label for="id_loan_amount">Loan Amount</label>
+                    {{ form.loan_amount }}
+                </div>
+                <div class="form-group">
+                    <label for="id_loan_term_years">Loan Term (Years)</label>
+                    {{ form.loan_term_years }}
+                </div>
+                <div class="form-group">
+                    <label for="id_annual_interest_rate">Annual Interest Rate (%)</label>
+                    {{ form.annual_interest_rate }}
+                </div>
+                <div class="form-group">
+                    <label for="id_collateral">Collateral Value</label>
+                    {{ form.collateral }}
+                </div>
+            </div>
+
+            <div class="button-group">
+                <a href="{% url 'dashboard:dashboard' %}" class="back-link">Back</a>
+                <button type="submit">Submit Application</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.getElementById('loanForm').addEventListener('submit', function(e) {
+            const numericFields = ['age', 'annual_income', 'existing_debt', 'savings_assets', 
+                                 'loan_amount', 'loan_term_years', 'annual_interest_rate', 'collateral'];
+            
+            numericFields.forEach(field => {
+                const input = document.getElementById(`id_${field}`);
+                const value = parseFloat(input.value);
+                
+                if (field === 'age') {
+                    if (value < 18 || value > 100) {
+                        e.preventDefault();
+                        alert('Age must be between 18 and 100 years.');
+                    }
+                }
+                
+                if (value < 0) {
+                    e.preventDefault();
+                    alert(`${field.replace('_', ' ').toUpperCase()} cannot be negative.`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

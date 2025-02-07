@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard</title>
+</head>
+<body>
+    <h1>Welcome to the Admin Dashboard</h1>
+    <p>Hello, {{ user.username }}! You have admin access.</p>
+
+    <h2>this is admin dashbaord</h2>
+    
+
+    <a href="{% url 'auth_system:logout' %}">Logout</a>
+</body>
+</html>

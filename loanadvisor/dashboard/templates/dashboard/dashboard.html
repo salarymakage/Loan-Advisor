@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <style>
+        :root {
+            --primary: #4299e1;
+            --secondary: #e2e8f0;
+            --background: #f7fafc;
+            --surface: #ffffff;
+            --text: #2d3748;
+            --text-light: #718096;
+            --success: #48bb78;
+            --warning: #ed8936;
+            --danger: #e53e3e;
+            --border-radius: 12px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            color: var(--text);
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            background: var(--surface);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        .user-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text);
+        }
+
+        .user-info p {
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .loan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .loan-card {
+            background: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: var(--text);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loan-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--primary);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+            transform-origin: left;
+        }
+
+        .loan-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .loan-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .loan-type {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--secondary);
+        }
+
+        .loan-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .loan-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .detail-label {
+            font-size: 0.875rem;
+            color: var(--text-light);
+        }
+
+        .detail-value {
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        .status-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            border-radius: 999px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .status-pending { 
+            background: #fef3c7; 
+            color: #92400e;
+        }
+
+        .status-approved { 
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status-rejected { 
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3182ce;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: var(--secondary);
+            color: var(--text);
+        }
+
+        .btn-secondary:hover {
+            background: #cbd5e0;
+            transform: translateY(-2px);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .loan-card {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+
+        .loan-card:nth-child(n) {
+            animation-delay: calc(n * 0.1s);
+        }
+
+        @media (max-width: 768px) {
+            .dashboard {
+                padding: 1rem;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+                position: static;
+            }
+
+            .buttons {
+                width: 100%;
+            }
+
+            .btn {
+                flex: 1;
+                justify-content: center;
+            }
+
+            .loan-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
+        .empty-state h3 {
+            color: var(--text);
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <div class="user-info">
+                <h2>Welcome, {{ name }}</h2>
+                <p>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path>
+                    </svg>
+                    {{ phone_number }}
+                </p>
+            </div>
+            <div class="buttons">
+                <a href="{% url 'dashboard:apply_loan' %}" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    Apply for Loan
+                </a>
+                <a href="{% url 'auth_system:logout' %}" class="btn btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    Logout
+                </a>
+            </div>
+        </div>
+
+        {% if loans %}
+        <div class="loan-grid">
+            {% for loan in loans %}
+            <a href="{% url 'dashboard:loan_detail' loan.id %}" class="loan-card">
+                <div class="loan-type">{{ loan.loan_type }} Loan</div>
+                <div class="loan-details">
+                    <div class="loan-detail">
+                        <span class="detail-label">Amount</span>
+                        <span class="detail-value">${{ loan.loan_amount|floatformat:2 }}</span>
+                    </div>
+                    <div class="loan-detail">
+                        <span class="detail-label">Term</span>
+                        <span class="detail-value">{{ loan.loan_term_years }} years</span>
+                    </div>
+                    <div class="loan-detail">
+                        <span class="detail-label">Interest Rate</span>
+                        <span class="detail-value">{{ loan.annual_interest_rate }}%</span>
+                    </div>
+                    <div class="loan-detail">
+                        <span class="detail-label">Risk Level</span>
+                        <span class="detail-value">{{ loan.risk_prediction }}</span>
+                    </div>
+                </div>
+                <div class="loan-detail">
+                    <span class="detail-label">Applied On</span>
+                    <span class="detail-value">{{ loan.created_at|date:"F j, Y" }}</span>
+                </div>
+                <div class="status-tag status-{{ loan.loan_status|lower }}">
+                    {% if loan.loan_status == 'Pending' %}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    {% elif loan.loan_status == 'Approved' %}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    {% else %}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="15" y1="9" x2="9" y2="15"></line>
+                        <line x1="9" y1="9" x2="15" y2="15"></line>
+                    </svg>
+                    {% endif %}
+                    {{ loan.loan_status }}
+                </div>
+            </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state">
+            <h3>No Loans Yet</h3>
+            <p>Start your journey by applying for a loan today!</p>
+            <a href="{% url 'dashboard:apply_loan' %}" class="btn btn-primary">Apply Now</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loanCards = document.querySelectorAll('.loan-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            loanCards.forEach(card => {
+                observer.observe(card);
+                
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-4px)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(0)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
