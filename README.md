@@ -126,3 +126,15 @@ Below are some screenshots showcasing the user interface for the loan applicatio
 # Synthetic Data
 
 github: https://github.com/salarymakage/loan_synthetic_data.git
+
+
+---
+
+## 👥 Contributors
+
+Thanks to these amazing people for their contributions:
+
+| Avatar | Name | GitHub |
+|--------|------|--------|
+| <img src="https://github.com/YOUR_USERNAME.png" width="50" height="50"> | Your Name | [@YOUR_USERNAME](https://github.com/boromrop) |
+| <img src="https://github.com/OTHER_USER.png" width="50" height="50"> | Other User | [@OTHER_USER](https://github.com/vaymithona) |
