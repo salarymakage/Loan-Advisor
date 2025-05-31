@@ -130,11 +130,21 @@ github: https://github.com/salarymakage/loan_synthetic_data.git
 
 ---
 
+<div align="right">
+
 ## 👥 Contributors
 
-Thanks to these amazing people for their contributions:
+<table>
+  <tr>
+    <td align="center">
+      <a href="https://github.com/salarymakage">
+        <img src="https://github.com/salarymakage.png" width="50" /><br/>
+        <sub><b>@salarymakage</b></sub>
+      </a>
+      <br/>
+      💻 Code, 🎨 Design, 📄 Docs
+    </td>
+  </tr>
+</table>
 
-| Avatar | Name | GitHub |
-|--------|------|--------|
-| <img src="https://github.com/boromrop.png" width="50" height="50"> | Borom Rop | [@YOUR_USERNAME](https://github.com/boromrop) |
-| <img src="https://github.com/vaymithona.png" width="50" height="50"> | Mithona Vay | [@OTHER_USER](https://github.com/vaymithona) |
+</div>
