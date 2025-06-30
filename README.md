@@ -136,6 +136,7 @@ Thanks to these amazing people for their contributions:
 
 | Avatar | Name | GitHub |
 |--------|------|--------|
+| <img src="https://github.com/salarymakage.png" width="50" height="50"> | Tan Chesthareah | [@boromrop](https://github.com/salarymakage) |
 | <img src="https://github.com/boromrop.png" width="50" height="50"> | Rop Borom | [@boromrop](https://github.com/boromrop) |
 | <img src="https://github.com/vaymithona.png" width="50" height="50"> | Vay Mithona | [@vaymithona](https://github.com/vaymithona) |
 ||
